@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{ object.title }}
+{% if object.variations_set.count > 1 %}
+<select>
+{% for var_obj in object.variations_set.all %}
+    <option value="{{ var_obj.id }}">{{ var_obj }}</option>
+{% endfor %}
+</select>
+{% else %}
+<br>
+    <a href="#">Add to Cart</a>
+<br>
+{% endif %}
+</body>
+</html>
+
+{% endblock %}

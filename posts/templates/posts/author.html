@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sexyness</title>
+</head>
+<body>
+<br />
+<div class="panel panel-default">
+  <div class="panel-heading">
+      Posts by:  {{ request.user }}
+  </div>
+</div>
+{% for lights in foo.all %}
+   <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href = '{{ lights.url }}'><h3 class="panel-title">{{ lights.title }}</h3></a>
+            </div>
+            <div class="panel-body">
+                {{ lights.pub_date }}
+                <br/>
+                Commends : {{ lights.commends }}
+            </div>
+        </div>
+{% endfor %}
+
+
+
+
+</body>
+</html>
+{% endblock %}

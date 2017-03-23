@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Post</title>
+</head>
+<body>
+    <h1> Create a New post: </h1>
+    <!--url in post is for the views method that will be accepting this request. VERY IMPORTANT TO DIFFER.-->
+    <form action="{% url 'posts:create' %}" method="POST">
+        {% csrf_token %}
+        Title : <br /> <input type="text" name="title" title="Post From"/><br />
+        URL to Video : <br /> <input type = text name = "u_r_l" /><br /><br />
+        <input type="submit" value="Create Post" />
+    </form>
+    <br />
+    {% if error %}
+        {{ error }}
+    {% endif %}
+    <br />
+</body>
+</html>
+{% endblock %}

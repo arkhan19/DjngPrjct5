@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+</head>
+<body>
+    <h1>Login to your Account</h1>
+
+    <form action="{% url 'signer:log_in' %}" method="POST">
+        {% csrf_token %}
+         {% if request.GET.next %}
+            <input type="hidden" value= {{request.GET.next}} name="next" />
+        {% endif %}
+        Username : <br /> <input  type="text" name="Username" />
+        <br />
+        Password : <br /><input  type="password" name="pass1" />
+        <br />
+        <br /><input type="SUBMIT" value="Login" />
+        <br/>
+        <br /> <a href={% url "password_reset_recover" %}>Forgot Password</a>
+    </form>
+    <br />
+    {% if error %}
+        {{ error }}
+    {% endif %}
+    <br />
+</body>
+</html>
+{% endblock %}
