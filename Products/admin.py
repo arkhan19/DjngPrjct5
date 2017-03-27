@@ -5,3 +5,4 @@ from django.contrib import admin
 
 admin.site.register(models.Product)
 admin.site.register(models.Variations)
+admin.site.register(models.ProductImage)

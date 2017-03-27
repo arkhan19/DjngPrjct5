@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class="table">
+{% for obj in object_list %}
+    <tr>
+        <td><a href = '{{ obj.get_absolute_url }}'>{{obj.title}}</a></td>
+    </tr>
+{% endfor %}
+</table>
+
+<form method = "POST" action="">
+    {% csrf_token %}
+    {{ formset.as_p }}
+    <input type = "submit" value="Update" class="btn" />
+</form>
+
+</body>
+</html>
+
+{% endblock %}

@@ -70,5 +70,13 @@ post_save.connect(product_saved_receiver, sender=Product) #Product is the sender
 # receiver and sender
 # after this we will have a default value, this means is that we are able to provide a product with default value
 # if it doesn't have any variations.
-#Product Images
-#Product Category
+
+
+# Product Images
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product)
+    image = models.ImageField(upload_to='')
+
+    def __unicode__(self):
+        return self.product.title
+# Product Category

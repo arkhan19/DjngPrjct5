@@ -15,8 +15,7 @@ Including another URLconf
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url
-from views import ProductListView
-from views import ProductDetailView
+from views import *
 #app_name = 'Products' #What does this do? It was causing url malfunctions, please find out when finished.
 # FBV Import
 # from vs.products.views import product_detail_view_function
@@ -27,4 +26,5 @@ urlpatterns = [
     # url(r'^(?P<id>\d+)', product_detail_view_function, name='product_detail_view_function'), # URL Pattern for FBV
     url(r'^$', ProductListView.as_view(), name='products'),
     url(r'^(?P<pk>\d+)/$', ProductDetailView.as_view(), name='productsd'), #cbv and as_view() to get a CB view
+    url(r'^(?P<pk>\d+)/inventory/$', VariationsListView.as_view(), name='productsi'),
 ]

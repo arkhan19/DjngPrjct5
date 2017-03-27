@@ -21,6 +21,9 @@ from posts import views
 from posts.serializers import PostViewSet
 from rest_framework_jwt.views import obtain_jwt_token
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 # Creating a Router to direct to api of posts.
 router = routers.DefaultRouter()
 
@@ -38,4 +41,4 @@ urlpatterns = [
     url(r'^api/token/auth/$', obtain_jwt_token), #JWT auth url
     url(r'^postapi/auth/', include('rest_framework.urls', namespace='rest_framework')), # adds login on drf page
     url(r'^postapi/', include(router.urls)),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

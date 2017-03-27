@@ -1,26 +1,54 @@
 {% extends "base.html" %}
 
-{% block content %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-{{ object.title }}
-{% if object.variations_set.count > 1 %}
-<select>
-{% for var_obj in object.variations_set.all %}
-    <option value="{{ var_obj.id }}">{{ var_obj }}</option>
-{% endfor %}
-</select>
-{% else %}
-<br>
-    <a href="#">Add to Cart</a>
-<br>
-{% endif %}
+{% block content %}
+    <div class='row'>
+        <div class="col-sm-8">
+        {{ object.title }}
+        {% if object.productimage_set.count > 0 %}
+            <div>
+                {% for img in object.productimage_set.all %}
+                <img class = 'img-responsive' src='{{ img.image.url }}' />
+                {% endfor %}
+            </div>
+        {% endif %}
+        <br/>
+
+
+        <p class = 'lead'>
+            {{ object.description }}
+        </p>
+    </div>
+
+
+
+
+
+     <!-- Product Sidebar -->
+     <div class="col-sm-4">
+        <h3>{{ object.price }}</h3>
+         {% if object.variations_set.count > 1 %}
+            <select>
+            {% for var_obj in object.variations_set.all %}
+
+                <option value="{{ var_obj.id }}">{{ var_obj }}</option>
+            {% endfor %}
+            </select>
+         {% else %}
+        <br>
+            <a href="#">Add to Cart</a>
+        <br>
+         {% endif %}
+     <br/>
+     <br/>
+     <h4>Related Products</h4>
+     </div>
+</div>
+{% endblock %}
 </body>
 </html>
-
-{% endblock %}
