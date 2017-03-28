@@ -6,20 +6,6 @@
     <title>Title</title>
 </head>
 <body>
-    # Jquery Stuffs.
-    <script>
-            {% block jquery %}
-{#               $("h3").css("color", "red"); {#                selector.css#}
-                var price = $('.variation_select option:selected').attr('data-price')
-                $('#price').text(price);
-
-{#                Chanign price based on selection#}
-                $('.variation_select').change(function () {
-                    var price = $('.variation_select option:selected').attr('data-price')
-                    $('#price').text(price);
-                })
-            {% endblock %}
-    </script>
 
 {% block content %}
     <div class='row'>
@@ -69,5 +55,20 @@
      </div>
 </div>
 {% endblock %}
+
+    # Jquery Stuffs.
+<script>
+     {% block jquery %}
+                $("#price").css("color","red")
+                var price = $(".variation_select option:selected").attr("data-price")
+                $("#price").text(price);
+{#                Chanign price based on selection#}
+                $('.variation_select').change(function () {
+                    var price = $(".variation_select option:selected").attr("data-price")
+                    $("#price").text(price);
+                })
+            {% endblock %}
+</script>
+
 </body>
 </html>
