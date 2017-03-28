@@ -1,6 +1,6 @@
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 # Create your views here.
 from django.db.models import Q #Q lookups
 from django.shortcuts import render
@@ -67,7 +67,18 @@ class VariationsListView(StaffRequiredMixin, ListView):
         return q
 
     def post(self, request, *args, **kwargs):
-        print request.POST
+        formset = VariationInventoryFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            formset.save(commit=False)
+            for form in formset:
+                new_item = form.save(commit=False)
+                if new_item.title:
+                    product_pk = self.kwargs.get("pk")
+                    product = get_object_or_404(Product, pk=product_pk)
+                    new_item.product = product
+                    new_item.save()
+            messages.success(request, "Your inventory and pricing has been updated.")
+            return redirect("products_list.html")
         raise Http404
 # def product_detail_view_function(request, id):
 #     product_instance = Product.objects.get(id=id)

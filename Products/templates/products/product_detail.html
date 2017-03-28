@@ -6,6 +6,21 @@
     <title>Title</title>
 </head>
 <body>
+    # Jquery Stuffs.
+    <script>
+            {% block jquery %}
+{#               $("h3").css("color", "red"); {#                selector.css#}
+                var price = $('.variation_select option:selected').attr('data-price')
+                $('#price').text(price);
+
+{#                Chanign price based on selection#}
+                $('.variation_select').change(function () {
+                    var price = $('.variation_select option:selected').attr('data-price')
+                    $('#price').text(price);
+                })
+            {% endblock %}
+    </script>
+
 {% block content %}
     <div class='row'>
         <div class="col-sm-8">
@@ -25,18 +40,13 @@
         </p>
     </div>
 
-
-
-
-
      <!-- Product Sidebar -->
      <div class="col-sm-4">
-        <h3>{{ object.price }}</h3>
+        <h3 id="price">{{ object.price }}</h3>
          {% if object.variations_set.count > 1 %}
-            <select>
+            <select class="form-control variation_select">
             {% for var_obj in object.variations_set.all %}
-
-                <option value="{{ var_obj.id }}">{{ var_obj }}</option>
+                <option data-price="{{ var_obj.price }}" value="{{ var_obj.id }}">{{ var_obj }}</option>
             {% endfor %}
             </select>
          {% else %}
@@ -46,6 +56,15 @@
          {% endif %}
      <br/>
      <br/>
+     <p>
+         Share Product on Social Media <br/>
+         <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">
+           <i class="fa fa-facebook-square" aria-hidden="true"></i>
+         </a>
+         <a href="#">
+           <i class="fa fa-twitter" aria-hidden="true"></i>
+         </a>
+     </p>
      <h4>Related Products</h4>
      </div>
 </div>
