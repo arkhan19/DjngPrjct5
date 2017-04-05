@@ -1,0 +1,12 @@
+ <div class="thumbnail text-muted" >
+                    {% if product.get_iamge_url %}
+                        <a href = '{{ product.get_absolute_url }}'>
+                            <img class = 'img-responsive' src='{{ product.get_iamge_url }}' /> <br/>
+                        </a>
+                    {% endif %}
+                        <div >
+                            <a href = '{{ product.get_absolute_url }}'> <h7>{{ product.title }}</h7> <hr/></a>
+                </div>
+                {# closes up the row, to avoid clogging of items on #}
+                                                               {# sidebar, each '' is an item on the page. #}
+               </div>

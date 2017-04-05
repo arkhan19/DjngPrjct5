@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,13 +10,19 @@
     <div class='row'>
         <div class="col-sm-8">
         {{ object.title }}
-        {% if object.productimage_set.count > 0 %}
+{#        {% if object.productimage_set.count > 0 %}#}
+{#            <div>#}
+{#                {% for img in object.productimage_set.all %}#}
+{#                <img class = 'img-responsive' src='{{ img.image.url }}' />#}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        {% endif %}#}
+         {% if object.get_iamge_url %}
             <div>
-                {% for img in object.productimage_set.all %}
-                <img class = 'img-responsive' src='{{ img.image.url }}' />
-                {% endfor %}
+                <img class = 'img-responsive' src='{{ object.get_iamge_url }}' />
             </div>
         {% endif %}
+
         <br/>
 
 
@@ -32,7 +37,7 @@
          {% if object.variations_set.count > 1 %}
             <select class="form-control variation_select">
             {% for var_obj in object.variations_set.all %}
-                <option data-price="{{ var_obj.price }}" value="{{ var_obj.id }}">{{ var_obj }}</option>
+                <option sale_price = "{{ var_obj.sale_price }} "data-price="{{ var_obj.price }}" value="{{ var_obj.id }}">{{ var_obj }}</option>
             {% endfor %}
             </select>
          {% else %}
@@ -52,23 +57,49 @@
          </a>
      </p>
      <h4>Related Products</h4>
+     <div class = 'row'>
+          {% for product in related %}
+              <div class ='col-xs-7'>
+                <div class="thumbnail text-muted" >
+                    {% if product.get_iamge_url %}
+                        <a href = '{{ product.get_absolute_url }}'>
+                            <img class = 'img-responsive' src='{{ product.get_iamge_url }}' /> <br/>
+                        </a>
+                    {% endif %}
+                        <div class="{{ product.get_absolute_url }}">
+                            <h7>{{ product.title }}</h7>
+                        </div>
+                </div>
+              {% cycle '' '</div><div class="row">' %}   {# closes up the row, to avoid clogging of items on sidebar#}
+          {% endfor %}
+               </div>
+     </div>
+
+{#         <a href = '{{ product.get_absolute_url }}'>{{ product.title }}</a> <br/>#}
      </div>
 </div>
-{% endblock %}
 
-    # Jquery Stuffs.
+{#    # Jquery Stuffs.#}
 <script>
-     {% block jquery %}
-                $("#price").css("color","red")
+function setPrice(){
+     var price = $(".variation_select option:selected").attr("data-price")
+     $("#price").text(price);
+     var sale_price = $(".variation_select option:selected").attr("sale_price")
+     if (sale_price != "" && sale_price != "None" && sale_price !=null){
+        $("#price").html("<h3>" + sale_price + "<small style='text-decoration:line-through'>" + price + "</small></h3>");
+     }else {
+     $("#price").text(price);
+     }
+}
+
+{#  Red Change to html tag with price id              $("#price").css("color","red")#}
                 var price = $(".variation_select option:selected").attr("data-price")
                 $("#price").text(price);
 {#                Chanign price based on selection#}
                 $('.variation_select').change(function () {
-                    var price = $(".variation_select option:selected").attr("data-price")
-                    $("#price").text(price);
+                    setPrice()
                 })
-            {% endblock %}
 </script>
-
+{% endblock %}
 </body>
 </html>

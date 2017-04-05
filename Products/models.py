@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.db.models.signals import post_save
+from django.template.defaultfilters import slugify
 # Create your models here.
 
 
@@ -17,12 +18,22 @@ class ProductManager(models.Manager):
     def all(self, *args, **kwargs):  # this will override the .all query set
         return self.get_queryset().active()
 
+    def get_related(self, instance):
+        products_one = self.get_queryset().filter(categories__in = instance.categories.all())
+        products_two = self.get_queryset().filter(default=instance.default)
+        qs = (products_one | products_two).exclude(id=instance.id).distinct()
+        return qs
+
 
 class Product(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=20)
     active = models.BooleanField(default=True)
+
+    categories = models.ManyToManyField('Category', blank=True)  # Many Product can have Many Categories # if you use without quotes
+    default = models.ForeignKey('Category', related_name='default_category', null=True, blank=True)          # Default Category # Error will come, this makes to lk in the file.
+
 
     objects = ProductManager()
 
@@ -32,6 +43,12 @@ class Product(models.Model):
     def get_absolute_url(self):
         #return "/products/%s"%(self.pk)
         return reverse("productsd", kwargs={"pk": self.pk})
+
+    def get_iamge_url(self):
+        img = self.productimage_set.first() # get's first item on query set or none
+        if img:
+            return img.image.url
+        return img # noneeeeee
 
 
 class Variations(models.Model):
@@ -80,3 +97,36 @@ class ProductImage(models.Model):
     def __unicode__(self):
         return self.product.title
 # Product Category
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=120)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(null=True, blank=True)
+    active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    def __unicode__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"slug": self.slug})
+
+def image_upload_to_featured(instance, filename):
+    title= instance.product.title
+    slug = slugify(title)
+    basename, file_extension = filename.split(".")
+    new_filename = "%s-%s.%s" %(slug, instance.id, file_extension)
+    return "products/%s/featured/%s" %(slug, new_filename)
+
+class ProductFeatured(models.Model):
+    product = models.ForeignKey(Product)
+    image = models.ImageField(upload_to=image_upload_to_featured)
+    title = models.CharField(max_length=120, null=True, blank=True)
+    text = models.CharField(max_length=220, null=True, blank=True)
+    text_right = models.BooleanField(default=False)
+    show_price = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.product.title

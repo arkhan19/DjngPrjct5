@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{#<table class="table">#}
+{#        {% for product in products %}#}
+{#<tr>#}
+{#    <td>#}
+{#        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>#}
+{#    </td>#}
+{#</tr>#}
+{#        {% endfor %}#}
+{#</table>#}
+
+    <div class = "row">
+          {% for product in products %}
+              <div class ='col-xs-5'>
+                <div class="thumbnail text-muted" >
+                    {% if product.get_iamge_url %}
+                        <a href = '{{ product.get_absolute_url }}'>
+                            <img class = 'img-responsive' src='{{ product.get_iamge_url }}' /> <br/>
+                        </a>
+                    {% endif %}
+                        <div class="{{ product.get_absolute_url }}">
+                            <h7>{{ product.title }}</h7>
+                        </div>
+                </div>
+                {# closes up the row, to avoid clogging of items on #}
+                                                               {# sidebar, each '' is an item on the page. #}
+          {% endfor %}
+               </div>
+          </div>
+{% endblock %}

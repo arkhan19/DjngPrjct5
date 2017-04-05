@@ -36,7 +36,9 @@ urlpatterns = [
     url(r'^accounts/', include('signer.urls')),
     url(r'^posts/', include('posts.urls')),
     url(r'^products/', include('Products.urls')),
+    url(r'^category/', include('Products.urls_category')), # In Product App -> urls_category file will be invoked
     url(r'^reset/', include('password_reset.urls')),
+
 
     url(r'^api/token/auth/$', obtain_jwt_token), #JWT auth url
     url(r'^postapi/auth/', include('rest_framework.urls', namespace='rest_framework')), # adds login on drf page

@@ -10,59 +10,19 @@
     <title>HOME</title>
 </head>
 <body>
-<h1> DJNG PRJCT 3</h1>
+<h1> Featured Products </h1>
 
+{% if featured_image %}
+    <div class = 'col-sm-6'>
+        <h1>{{ featured_image.product.title }}</h1>
+        <h4>{{ featured_image.product.description }}</h4>
+    <a class = 'btn btn-lg btn-primary' href="{{ featured_image.product.get_absolute_url }}" role="button"> Buy Now</a>
+    </div>
+    <div class="col-sm-6">
+    <img src =" {{  featured_image.image.url }}" class = 'img-responsive'>
+    </div>
+{% endif %}
 
-{% for post in post_obj_for_html.all %}
-<table>
-<tr>
-    <td>
-        <a href = '{{ post.url }}'>{{ post.title }}</a>
-
-    </td>
-    <td style="padding-left: 20px;">
-        Posted by :  <a href = "{% url 'posts:postings' post.author.id %}">{{post.author}}</a>
-    </td>
-</tr>
-<tr>
-    <td>
-        Commends : {{post.commends}}
-    </td>
-    <td style="padding-right: 20px; padding-left: 20px;">
-        Published on : {{post.pub_date}}
-    </td>
-</tr>
-<tr>
-    <td>
-        <a href ="#" onClick="document.getElementById('thumbs_up {{ post.id }}').submit()">
-            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-        </a>
-    </td>
-
-    <td>
-        <a href ="#" onClick="document.getElementById('thumbs_down {{ post.id }}').submit()">
-            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
-        </a>
-    </td>
-</tr>
-</table>
-{#                    This section is used by thumbs up and thumbs down to funciton.#}
-
-                    <form action = "{% url 'posts:counter_up' post.id %}" method="POST" id="thumbs_up {{ post.id }}">
-                        {% csrf_token %}
-                        <input type="hidden" />
-                    </form>
-
-                    <form action = "{% url 'posts:counter_down' post.id %}" method="POST" id="thumbs_down {{ post.id }}">
-                        {% csrf_token %}
-                        <input type="hidden" />
-                    </form>
-
-
-<br />
-<br />
-<br />
-{% endfor %}
 </body>
 </html>
 {% endblock %}

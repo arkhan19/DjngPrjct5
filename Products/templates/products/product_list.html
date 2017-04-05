@@ -1,20 +1,18 @@
 {% extends "base.html" %}
-
-{% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <body>
-<table class="table">
-{% for obj in object_list %}
-    <tr>
-        <td><a href = '{{ obj.get_absolute_url }}'>{{obj.title}}</a></td>
-    </tr>
-{% endfor %}
-</table>
-</body>
-</html>
-
+{% block content %}
+{#<table class="table">#}
+{#{% for obj in object_list %}#}
+{#    <tr>#}
+{#        <td><a href = '{{ obj.get_absolute_url }}'>{{obj.title}}</a></td>#}
+{#    </tr>#}
+{#{% endfor %}#}
+{#</table>#}
+<div class = "row">
+          {% for product in object_list %}
+                <div class ='col-xs-10'>
+                    {% include "products/product_thumbnail.html" with product=product %}
+                </div>
+          {% endfor %}
 {% endblock %}
+</body>

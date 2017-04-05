@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.utils import timezone
-from .models import Product, Variations
+from .models import Product, Variations, Category
 from .forms import VariationInventoryFormSet
 
 from .mixins import StaffRequiredMixin
@@ -16,6 +16,14 @@ from .mixins import StaffRequiredMixin
 class ProductDetailView(DetailView):
     model = Product  # name of the class model
     template_name = "products/product_detail.html"
+
+    def get_context_data(self, *args ,**kwargs):
+        context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
+        instance = self.get_object()
+        # context["related"] = Product.objects.get_related(instance).order_by('?')
+        context["related"] = sorted(Product.objects.get_related(instance).order_by('?'), key= lambda x: x.title)  # to
+                                                                                                # limit 6 items add [:6]
+        return context
 
 
 class ProductListView(ListView):
@@ -89,3 +97,22 @@ class VariationsListView(StaffRequiredMixin, ListView):
 #     return render(request, template, context)
 
 # Using CBV not Function based views.
+
+
+class CategoryListView(ListView):
+    model = Category
+    queryset = Category.objects.all()
+    template_name = "products/product_list.html"
+
+
+class CategoryDetailView(DetailView):
+    model = Category
+
+    def get_context_data(self, *args, **kwargs):
+        context=super(CategoryDetailView, self).get_context_data(*args, **kwargs)
+        obj = self.get_object()
+        product_set = obj.product_set.all()  #Query set 1
+        default_products = obj.default_category.all()  #Query set 2
+        products = (product_set | default_products).distinct()  # Query set of the same class, ELSE it will not work
+        context ["products"] = products  #Now it combines query set 1 and 2
+        return context
