@@ -9,10 +9,12 @@
 {#{% endfor %}#}
 {#</table>#}
 <div class = "row">
-          {% for product in object_list %}
-                <div class ='col-xs-10'>
-                    {% include "products/product_thumbnail.html" with product=product %}
-                </div>
-          {% endfor %}
+{#          {% for product in object_list %}#}
+{#                <div class ='col-xs-10'>#}
+{#                    {% include "products/product_thumbnail.html" with product=product %}#}
+{#                </div>#}
+{#          {% endfor %}#}
+{% include "Products/products.html" with product=product %}
+    </div>
 {% endblock %}
 </body>

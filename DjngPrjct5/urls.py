@@ -20,7 +20,7 @@ from rest_framework import routers
 from posts import views
 from posts.serializers import PostViewSet
 from rest_framework_jwt.views import obtain_jwt_token
-
+from cart.views import CartView
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -38,6 +38,7 @@ urlpatterns = [
     url(r'^products/', include('Products.urls')),
     url(r'^category/', include('Products.urls_category')), # In Product App -> urls_category file will be invoked
     url(r'^reset/', include('password_reset.urls')),
+    url(r'^cart/$', CartView.as_view(), name='cart'),
 
 
     url(r'^api/token/auth/$', obtain_jwt_token), #JWT auth url

@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'password_reset',
     'posts',
     'signer',
+    'cart',
+
+
 ]
 
 MIDDLEWARE = [

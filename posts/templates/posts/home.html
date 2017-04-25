@@ -2,27 +2,24 @@
 
 {% block content %}
 
-<!DOCTYPE html>
-
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>HOME</title>
-</head>
-<body>
 <h1> Featured Products </h1>
 
 {% if featured_image %}
-    <div class = 'col-sm-6'>
+    <div class="col-sm-7">
+        <img src =" {{  featured_image.image.url }}" class = 'img-responsive'>
+    </div>
+    <div class = 'col-sm-5'>
         <h1>{{ featured_image.product.title }}</h1>
         <h4>{{ featured_image.product.description }}</h4>
-    <a class = 'btn btn-lg btn-primary' href="{{ featured_image.product.get_absolute_url }}" role="button"> Buy Now</a>
-    </div>
-    <div class="col-sm-6">
-    <img src =" {{  featured_image.image.url }}" class = 'img-responsive'>
+            <a class = 'btn btn-lg btn-primary' href="{{ featured_image.product.get_absolute_url }}" role="button"> Buy Now</a>
     </div>
 {% endif %}
+<hr>
+<div class = col-sm-7>
+    <h3>Recommended Products</h3>
 
-</body>
-</html>
+        {% include "Products/products.html" with object_list=products %}
+
+</div>
+{#    #}
 {% endblock %}

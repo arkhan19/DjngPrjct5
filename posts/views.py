@@ -6,14 +6,20 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 # Create your views here.
 from posts.models import Posts  # model class
-from Products.models import ProductFeatured
+from Products.models import ProductFeatured, Product
 
 
 def home(request):
     homies = Posts.objects.order_by('pub_date')
     featured_image = ProductFeatured.objects.first()
+    products = Product.objects.all
 
-    return render(request, 'posts/home.html', {'post_obj_for_html': homies, 'featured_image':featured_image}) # Context
+    context = {
+        'post_obj_for_html': homies,
+        'featured_image': featured_image,
+        'products':products
+    }
+    return render(request, 'posts/home.html', context) # Context
 
 
 @login_required
