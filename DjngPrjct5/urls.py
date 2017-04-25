@@ -24,6 +24,7 @@ from cart.views import CartView
 from django.conf.urls.static import static
 from django.conf import settings
 
+
 # Creating a Router to direct to api of posts.
 router = routers.DefaultRouter()
 
