@@ -48,7 +48,9 @@ class Product(models.Model):
         img = self.productimage_set.first() # get's first item on query set or none
         if img:
             return img.image.url
-        return img # noneeeeee
+        return img # noneeeeee\
+
+
 
 
 class Variations(models.Model):
@@ -70,6 +72,15 @@ class Variations(models.Model):
 
     def get_absolute_url(self):
         return self.product.get_absolute_url()
+
+    def add_to_cart(self):
+        return "%s?item=%s&qty=1" % (reverse("cart"), self.id,)
+
+    def remove_from_cart(self):
+        return "%s?item=%s&delete=True" % (reverse("cart"), self.id,)
+
+    def get_title(self):
+        return "%s - %s" %(self.product.title, self.title)
 
 
 def product_saved_receiver(sender, instance, created, *args, **kwargs):

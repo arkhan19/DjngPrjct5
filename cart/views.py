@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import View
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.views.generic.detail import SingleObjectMixin #Will help in getting objects on current HTTP request
 # Create your views here.
 from Products.models import Variations
@@ -47,7 +47,12 @@ class CartView(SingleObjectMixin, View):
         delete_item = request.GET.get("delete")
         if item_id:
             item_instance = get_object_or_404(Variations, id=item_id)
-            qty = request.GET.get("qty")
+            qty = request.GET.get("qty", 1)
+            try:
+                if int(qty) < 1:
+                    delete_item = True
+            except:
+                raise Http404
             cart_item = CartItem.objects.get_or_create(cart=cart, item=item_instance)[0]
             if delete_item:
                 cart_item.delete()

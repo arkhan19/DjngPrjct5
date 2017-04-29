@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
-
+from django.core.urlresolvers import reverse
 from django.db import models
 from Products.models import Variations
 from django.conf import settings
-
+from Products.models import Product
 # Create your models here.
 
 
@@ -14,6 +14,10 @@ class CartItem(models.Model):
 
     def __unicode__(self):
         return self.item.title
+
+    def remove(self): # /cart/?item=10&delete=True example of what it will reverse to.
+    # return "%s?item=%s&delete=True" %(reverse("cart"), self.item.id, ) # The url we used to get cart item with ? etc
+        return self.item.remove_from_cart()
 
 
 class Cart(models.Model):

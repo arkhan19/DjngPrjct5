@@ -1,8 +1,43 @@
 {%  extends "base.html" %}
+
 {% block content %}
 
-{{ object }}
-{{ object.items.all }}
+{#{{ object }}#}
+{#{{ object.items.all }}#}
+    <table class = 'table'>
+
+
+    {% for item in object.cartitem_set.all %}
+        <tr>
+            <form action="." method="GET">
+                <script type="text/javascript">
+                {% block jquery %}
+                    $(document).ready(function() {
+                        $(".item-qty").change(function(){
+                            $(this).next(".btn-update").fadeIn()
+                        });
+                    });
+                {% endblock %}
+                </script>
+                <td> {{ item.item.get_title }}</td>
+{#                    input for item's variation ID #}
+                    <input type="hidden" name="item" value="{{ item.item.id }}" />
+                <td>
+                    <input type = "number" class = "item-qty" name = "qty" value="{{ item.quantity }}" />
+                    <input type = "submit" class = "btn-update btn btn-link" value="Update item" style="display:none;"/>
+                </td>
+
+                <td> {{ item.line_total }} </td>
+
+                <td style="text-align:right">
+                    <a href ='{{ item.remove }}'>Remove</a>
+                </td>
+            </form>
+        </tr>
+    {% endfor %}
+
+    </table>
+
 
 {% endblock %}
 
