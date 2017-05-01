@@ -15,6 +15,7 @@ Including another URLconf
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import url,include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from rest_framework import routers
 from posts import views
@@ -45,4 +46,5 @@ urlpatterns = [
     url(r'^api/token/auth/$', obtain_jwt_token), #JWT auth url
     url(r'^postapi/auth/', include('rest_framework.urls', namespace='rest_framework')), # adds login on drf page
     url(r'^postapi/', include(router.urls)),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

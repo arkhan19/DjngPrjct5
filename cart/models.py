@@ -4,7 +4,7 @@ from django.db import models
 from Products.models import Variations
 from django.conf import settings
 from Products.models import Product
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from decimal import Decimal
 # Create your models here.
 
@@ -22,6 +22,7 @@ class CartItem(models.Model):
     # return "%s?item=%s&delete=True" %(reverse("cart"), self.item.id, ) # The url we used to get cart item with ? etc
         return self.item.remove_from_cart()
 
+
 def cart_item_pre_save_receiver(sender, instance, *args, **kwargs):
     qty = instance.quantity
 
@@ -32,11 +33,26 @@ def cart_item_pre_save_receiver(sender, instance, *args, **kwargs):
 
 pre_save.connect(cart_item_pre_save_receiver, sender=CartItem)
 
+def cart_item_post_save_receiver(sender, instance, *args, **kwargs):
+    instance.cart.update_subtotal()
+
+post_save.connect(cart_item_post_save_receiver, sender=CartItem)
+
+
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     items = models.ManyToManyField(Variations, through=CartItem) #Through
     timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+    subtotal= models.DecimalField(max_digits=50, decimal_places=2, default=0)
 
     def __unicode__(self):
         return str(self.id)
+
+    def update_subtotal(self):
+        total = 0
+        items = self.cartitem_set.all()
+        for item in items:
+            total += item.line_item_total
+        self.subtotal = total
+        self.save()
