@@ -1,40 +1,74 @@
 {% extends "base.html" %}
+{#    <script>#}
+{##}
+{#{% block js %}#}
+{##}
 
-<body>
-{% block js %}
-            <script>
-function setPrice(){
-     var price = $(".variation_select option:selected").attr("data-price")
-     $("#price").text(price);
-     var sale_price = $(".variation_select option:selected").attr("sale_price")
-     if (sale_price != "" && sale_price != "None" && sale_price !=null){
-        $("#price").html("<h3>" + sale_price + "<small style='text-decoration:line-through'>" + price + "</small></h3>");
-     }else {
-     $("#price").text(price);
-     }
-}
+{#}#}
+{##}
 
-{#  Red Change to html tag with price id              $("#price").css("color","red")#}
-                var price = $(".variation_select option:selected").attr("data-price")
-                $("#price").text(price);
-{#                Chanign price based on selection#}
-                $('.variation_select').change(function () {
-                    setPrice()
-                });
+{##}
+{#     $('#submit-btn').click(function(event){#}
+{#        event.preventDefault();#}
+{#        var formData = $('#add-form').serialize();#}
+{#        console.log(formData);#}
+{#        });#}
+{#{% endblock %}#}
+{#</script>#}
 
 
-     $('.submit-btn').click(function(){
-        event.preventDefault();
-        var formData = $('.add-form').serialize();
-        console.log(formData);
-        });
 
 
-</script>
-{% endblock %}
 {% block content %}
-    <div class='row'>
 
+    <script type="text/javascript">
+                {% block jquery %}
+
+
+        $(document).ready(function() {
+{#            function setPrice(){#}
+{#                var price = $(".variation_select option:selected").attr("data-price")#}
+{#                $("#price").text(price);#}
+{#                var sale_price = $(".variation_select option:selected").attr("sale_price")#}
+{#                 if (sale_price != "" && sale_price != "None" && sale_price !=null){#}
+{#                    $("#price").html("<h3>" + sale_price + "<small style='text-decoration:line-through'>" + price + "</small></h3>");#}
+{#                     }else {#}
+{#                    $("#price").text(price);#}
+{#                    }#}
+            {#  Red Change to html tag with price id              #}
+{#                $("#price").css("color","red")#}
+{#                var price = $(".variation_select option:selected").attr("data-price")#}
+{#                $("#price").text(price);#}
+{#                Chanign price based on selection#}
+{#                $('.variation_select').change(function () {#}
+{#                    setPrice()#}
+{#                });#}
+
+            $('#submit-btn').click(function(event){
+                event.preventDefault();
+                var formData = $('#add-form').serialize();
+                console.log(formData);
+
+                $.ajax({
+                    type:"GET",
+                    url:"{% url 'cart' %}",
+                    data: formData,
+                    success: function(data){
+                        $("#jquery-message").text("Added " + data.item_Added +
+                                                  " Deleted " + data.deleted)
+                        console.log(data)
+                    },
+                    error: function(response, error){
+{#                        console.log(response)#}
+{#                        console.log(error)#}
+                        $("#add-form").submit()
+                    }
+                })
+            });
+        });
+                {% endblock %}
+    </script>
+    <div class='row'>
         <div class="col-sm-8">
         {{ object.title }}
 {#        {% if object.productimage_set.count > 0 %}#}
@@ -61,6 +95,9 @@ function setPrice(){
      <!-- Product Sidebar -->
      <div class="col-sm-4">
         <form id = 'add-form' method = 'GET' action="{% url 'cart' %}">
+        <p class="lead" id ="jquery-message">
+
+        </p>
                  {% if object.variations_set.count > 1 %}
                      <h3 id="price">{{ object.price }}</h3>
 
@@ -122,11 +159,7 @@ function setPrice(){
      </div>
 </div>
 
-{#    # Jquery Stuffs.#}
 
 {% endblock %}
-{% block jquery %}
 
-{% endblock %}
-</body>
 

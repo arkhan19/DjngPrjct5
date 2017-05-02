@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic.base import View
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.views.generic.detail import SingleObjectMixin #Will help in getting objects on current HTTP request
+from django.core.urlresolvers import reverse
 # Create your views here.
 from Products.models import Variations
 from cart.models import Cart, CartItem
@@ -44,7 +45,8 @@ class CartView(SingleObjectMixin, View):
         #     cart.save()
         cart = self.get_object() #Working with get_object defined above.
         item_id = request.GET.get("item")
-        delete_item = request.GET.get("delete")
+        delete_item = request.GET.get("delete", False)
+        item_added = False
         if item_id:
             item_instance = get_object_or_404(Variations, id=item_id)
             qty = request.GET.get("qty", 1)
@@ -53,12 +55,40 @@ class CartView(SingleObjectMixin, View):
                     delete_item = True
             except:
                 raise Http404
-            cart_item = CartItem.objects.get_or_create(cart=cart, item=item_instance)[0]
+            cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item_instance)
+             # if it's not added it's False and still going through JSON response
+            if created:
+                item_added = True
             if delete_item:
                 cart_item.delete()
             else:
                 cart_item.quantity = qty
                 cart_item.save()
+            if not request.is_ajax():
+                # return if saved and set, it should be sent back and not changed if page is refreshed
+                return HttpResponseRedirect(reverse("cart"))
+                #return cart_item.cart.get_absolute_url()
+
+        # handling AJAX call
+        if request.is_ajax():
+            try:
+                total = cart_item.line_item_total
+            except:
+                total = None
+            try:
+                subtotal = cart_item.cart.subtotal
+            except:
+                subtotal = None
+            data = {
+                "deleted": delete_item,
+                "item_added":item_added,
+                "line_total": total,
+                "subtotal": subtotal,
+            }
+
+
+            print (request.GET.get("item"))
+            return JsonResponse(data)
 
         context = {
             "object": self.get_object()

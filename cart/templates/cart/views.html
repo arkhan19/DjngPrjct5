@@ -8,28 +8,65 @@
 
 
     {% for item in object.cartitem_set.all %}
-        <tr>
+        <tr id ='item-{{ item.item.id }}'>
             <form action="." method="GET">
                 <script type="text/javascript">
                 {% block jquery %}
                     $(document).ready(function() {
+{#                       $(".item-qty").change(function(){#}
+{#                            $(this).next(".btn-update").fadeIn()#}
+{#                        });#}
                         $(".item-qty").change(function(){
-                            $(this).next(".btn-update").fadeIn()
-                        });
+{# get's the value from the previous hidden input selector which has the item#}
+                            var item = $(this).prev("input[type='hidden']").val();
+{# getting the value from the selector #}
+                            var qty = $(this).val()
+                            var data = {
+                                item : item,
+                                qty : qty
+                            };
+                            console.log(data);
+
+                            $.ajax({
+                                    type:"GET",
+                                    url:"{% url 'cart' %}",
+                                    data: data,
+                                          success: function(data){
+                                              $("#jquery-message").text("Added " + data.item_Added +
+                                                  " Deleted " + data.deleted)
+                                              if (data.deleted)
+                                              {
+{#                                                  #fades out the tr if deleted#}
+                                                  $("#item-"+item).fadeOut();
+                                              }
+                                              else
+                                              {
+                                                   $('#item-line-total-'+item).text(data.line_total);
+                                                   $("#subtotal").text(data.subtotal);
+                                              }
+                                    console.log(data)
+                    },
+                    error: function(response, error){
+                                $("#add-form").submit()
+                                }
+                            })
+                         });
                     });
                 {% endblock %}
                 </script>
                 <td> {{ item.item.get_title }}</td>
 {#                    input for item's variation ID #}
-                    <input type="hidden" name="item" value="{{ item.item.id }}" />
+
                 <td>
-                    <input type = "number" class = "item-qty" name = "qty" value="{{ item.quantity }}" />
-                    <input type = "submit" class = "btn-update btn btn-link" value="Update item" style="display:none;"/>
+                    <form action="." method = "GET">
+                        <input type="hidden" name="item" value="{{ item.item.id }}" />
+                        <input type = "number" class = "item-qty" name = "qty" value="{{ item.quantity }}" />
+                        <input type = "submit" class = "btn-update btn btn-link" value="Update item" style="display:none;"/>
+                    </form>
                 </td>
 
-                <td> {{ item.line_item_total }} </td>
-
-                <td style="text-align:right">
+                <td id = 'item-line-total-{{ item.item.id }}'>{{ item.line_item_total }}</td>
+                <td class="text-align:right">
                     <a href ='{{ item.remove }}'>Remove</a>
                 </td>
             </form>
@@ -37,7 +74,7 @@
 
     {% endfor %}
         <tr>
-            <td colspan="3" class="text-right">Subtotal: {{  object.subtotal }}</td>
+            <td id = 'subtotal' colspan="3" class="text-right">Subtotal: {{ object.subtotal }}</td>
         </tr>
     </table>
 
