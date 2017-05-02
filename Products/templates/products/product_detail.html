@@ -3,7 +3,23 @@
 {##}
 {#{% block js %}#}
 {##}
-
+{# function setPrice() {#}
+{#                var price = $(".variation_select option:selected").attr("data-price")#}
+{#                $("#price").text(price);#}
+{#                var sale_price = $(".variation_select option:selected").attr("sale_price")#}
+{#                if (sale_price != "" && sale_price != "None" && sale_price != null) {#}
+{#                    $("#price").html("<h3>" + sale_price + "<small style='text-decoration:line-through'>" + price + "</small></h3>");#}
+{#                } else {#}
+{#                    $("#price").text(price);#}
+{#                }#}
+                {#              Red Change to html tag with price id              #}
+{#                $("#price").css("color", "red")#}
+{#                var price = $(".variation_select option:selected").attr("data-price")#}
+{#                $("#price").text(price);#}
+                {#                Chanign price based on selection#}
+{#                $('.variation_select').change(function () {#}
+{#                    setPrice()#}
+{#                #}
 {#}#}
 {##}
 
@@ -20,51 +36,50 @@
 
 
 {% block content %}
+{#            <style>#}
+{#                {% block style %}#}
+{#                    .container-alert-flash{#}
+{#                                        position: absolute;#}
+{#                                        top:  10px;#}
+{#                                        z-index: 50000;#}
+{#                                        width: 100%;#}
+{#                                        right:0px;#}
+{#                                        margin: 0px;#}
+{#                                           }#}
+{#                {% endblock %}#}
+{#            </style>#}
 
     <script type="text/javascript">
-                {% block jquery %}
-
-
+        {% block jquery %}
         $(document).ready(function() {
-{#            function setPrice(){#}
-{#                var price = $(".variation_select option:selected").attr("data-price")#}
-{#                $("#price").text(price);#}
-{#                var sale_price = $(".variation_select option:selected").attr("sale_price")#}
-{#                 if (sale_price != "" && sale_price != "None" && sale_price !=null){#}
-{#                    $("#price").html("<h3>" + sale_price + "<small style='text-decoration:line-through'>" + price + "</small></h3>");#}
-{#                     }else {#}
-{#                    $("#price").text(price);#}
-{#                    }#}
-            {#  Red Change to html tag with price id              #}
-{#                $("#price").css("color","red")#}
-{#                var price = $(".variation_select option:selected").attr("data-price")#}
-{#                $("#price").text(price);#}
-{#                Chanign price based on selection#}
-{#                $('.variation_select').change(function () {#}
-{#                    setPrice()#}
-{#                });#}
-
             $('#submit-btn').click(function(event){
                 event.preventDefault();
-                var formData = $('#add-form').serialize();
-                console.log(formData);
-
-                $.ajax({
-                    type:"GET",
-                    url:"{% url 'cart' %}",
-                    data: formData,
-                    success: function(data){
-                        $("#jquery-message").text("Added " + data.item_Added +
+                        var formData = $('#add-form').serialize();
+                        console.log(formData);
+                            $.ajax({
+                                type: "GET",
+                                url: "{% url 'cart' %}",
+                                data: formData,
+                                success: function(data){
+                                    $("#jquery-message").text("Added " + data.item_Added +
                                                   " Deleted " + data.deleted)
-                        console.log(data)
-                    },
-                    error: function(response, error){
-{#                        console.log(response)#}
-{#                        console.log(error)#}
-                        $("#add-form").submit()
-                    }
-                })
+{#                                    var template = "{% include 'alertmessage.html' %}";#}
+{#                                    $("body").append(template);#}
+{#                                    $(".container-alert-flash").fadeIn();#}
+{#                                        setTimedOut(function(){#}
+{#                                        $(".container-alert-flash").fadeOut();#}
+{#                                        },1800);#}
+{#                                        console.log(template)#}
+                                },
+                                error: function(response, error){
+                                        console.log(response)
+                                        console.log(error)
+                                        $("#add-form").submit()
+                                }
+                            });
+
             });
+
         });
                 {% endblock %}
     </script>
@@ -95,9 +110,7 @@
      <!-- Product Sidebar -->
      <div class="col-sm-4">
         <form id = 'add-form' method = 'GET' action="{% url 'cart' %}">
-        <p class="lead" id ="jquery-message">
-
-        </p>
+        <p class="lead" id ="jquery-message"></p>
                  {% if object.variations_set.count > 1 %}
                      <h3 id="price">{{ object.price }}</h3>
 
@@ -122,7 +135,7 @@
         <br />
                     <input class="form-control" type = 'number' name="qty" value="1" />
                 <br />
-             <input id = 'submit-btn' type="submit" class="btn btn-default" value="Add to Cart" />
+             <input id = "submit-btn" type="submit" class="btn btn-default" value="Add to Cart" />
         </form>
 {#     END OF PRODUCT VARIATION AND ADD TO CART FEATURES#}
 

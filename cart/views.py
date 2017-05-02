@@ -64,10 +64,10 @@ class CartView(SingleObjectMixin, View):
             else:
                 cart_item.quantity = qty
                 cart_item.save()
-            if not request.is_ajax():
-                # return if saved and set, it should be sent back and not changed if page is refreshed
-                return HttpResponseRedirect(reverse("cart"))
-                #return cart_item.cart.get_absolute_url()
+            # if not request.is_ajax():
+            #     # return if saved and set, it should be sent back and not changed if page is refreshed
+            #     return HttpResponseRedirect(reverse("cart"))
+            #     #return cart_item.cart.get_absolute_url()
 
         # handling AJAX call
         if request.is_ajax():
@@ -85,7 +85,6 @@ class CartView(SingleObjectMixin, View):
                 "line_total": total,
                 "subtotal": subtotal,
             }
-
 
             print (request.GET.get("item"))
             return JsonResponse(data)
