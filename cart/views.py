@@ -83,7 +83,7 @@ class CartView(SingleObjectMixin, View):
                 "deleted": delete_item,
                 "item_added":item_added,
                 "line_total": total,
-                "subtotal": subtotal,
+                "sub_total": subtotal,
             }
 
             print (request.GET.get("item"))

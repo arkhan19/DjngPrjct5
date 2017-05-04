@@ -61,8 +61,8 @@
                                 url: "{% url 'cart' %}",
                                 data: formData,
                                 success: function(data){
-                                    $("#jquery-message").text("Added " + data.item_Added +
-                                                  " Deleted " + data.deleted)
+{#                                    $("#jquery-message").text("Added " + data.item_Added +#}
+{#                                                  " Deleted " + data.deleted);#}
 {#                                    var template = "{% include 'alertmessage.html' %}";#}
 {#                                    $("body").append(template);#}
 {#                                    $(".container-alert-flash").fadeIn();#}
@@ -83,7 +83,18 @@
         });
                 {% endblock %}
     </script>
+
+
+
+
     <div class='row'>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            <strong>{{ object.title }}</strong> Added to the Cart.
+        </div>
+
         <div class="col-sm-8">
         {{ object.title }}
 {#        {% if object.productimage_set.count > 0 %}#}
