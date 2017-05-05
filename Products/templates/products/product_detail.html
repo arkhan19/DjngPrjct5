@@ -61,19 +61,13 @@
                                 url: "{% url 'cart' %}",
                                 data: formData,
                                 success: function(data){
-{#                                    $("#jquery-message").text("Added " + data.item_Added +#}
-{#                                                  " Deleted " + data.deleted);#}
-{#                                    var template = "{% include 'alertmessage.html' %}";#}
-{#                                    $("body").append(template);#}
-{#                                    $(".container-alert-flash").fadeIn();#}
-{#                                        setTimedOut(function(){#}
-{#                                        $(".container-alert-flash").fadeOut();#}
-{#                                        },1800);#}
-{#                                        console.log(template)#}
+                                    $("#jquery-message").text("Added " + data.item_added +
+                                                  " Deleted " + data.deleted);
+                                    showFlashMessage("Product Added")
                                 },
                                 error: function(response, error){
-                                        console.log(response)
-                                        console.log(error)
+{#                                        console.log(response)#}
+{#                                        console.log(error)#}
                                         $("#add-form").submit()
                                 }
                             });
@@ -86,15 +80,7 @@
 
 
 
-
     <div class='row'>
-        <div class="alert alert-warning alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            <strong>{{ object.title }}</strong> Added to the Cart.
-        </div>
-
         <div class="col-sm-8">
         {{ object.title }}
 {#        {% if object.productimage_set.count > 0 %}#}

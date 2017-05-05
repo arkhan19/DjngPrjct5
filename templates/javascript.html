@@ -1,6 +1,8 @@
 {% load staticfiles %}
 <!--Bootstrap Core Javascript to be transferred here -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <script src="https://use.fontawesome.com/0f41387e41.js"></script>
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static 'js/html5shiv.min.js' %}"></script>
+    <script src="{% static 'js/respond.min.js' %}"></script>
+    <script src="{% static 'js/0f41387e41.js' %}"></script>
+{#    <script src="https://use.fontawesome.com/0f41387e41.js"></script>#}
+    <script src="{% static 'js/custom.js' %}"></script>

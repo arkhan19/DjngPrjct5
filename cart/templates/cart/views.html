@@ -34,6 +34,7 @@
                                           success: function(data){
                                               $("#jquery-message").text("Added " + data.item_Added +
                                                   " Deleted " + data.deleted)
+                                              showFlashMessage("Cart Updated")
                                               if (data.deleted)
                                               {
 {#                                                  #fades out the tr if deleted#}
@@ -45,6 +46,7 @@
                                                    $("#subtotal").text(data.sub_total);
                                               }
                                     console.log(data)
+
                     },
                     error: function(response, error){
                                 $("#add-form").submit()
