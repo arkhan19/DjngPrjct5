@@ -64,6 +64,7 @@
                                     $("#jquery-message").text("Added " + data.item_added +
                                                   " Deleted " + data.deleted);
                                     showFlashMessage("Product Added")
+                                    updateCartItemCount();
                                 },
                                 error: function(response, error){
 {#                                        console.log(response)#}

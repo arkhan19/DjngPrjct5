@@ -18,7 +18,7 @@ function showFlashMessage(message)
 
     $("body").append(template)
     $('.container-alert-flash').fadeIn();
-    setTimedOut(function(){
+    setTimeout(function(){
         $('.container-alert-flash').fadeOut();
     }, 1800);
 }

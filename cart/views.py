@@ -79,14 +79,19 @@ class CartView(SingleObjectMixin, View):
                 subtotal = cart_item.cart.subtotal
             except:
                 subtotal = None
+            try:
+                total_items = cart_item.cart.items.count()
+            except:
+                total_items = 0
             data = {
                 "deleted": delete_item,
                 "item_added":item_added,
                 "line_total": total,
                 "sub_total": subtotal,
+                "total_items": total_items
             }
 
-            print (request.GET.get("item"))
+            # print (request.GET.get("item"))
             return JsonResponse(data)
 
         context = {
@@ -95,3 +100,18 @@ class CartView(SingleObjectMixin, View):
         template = self.template_name
         return render(request, template, context)
 
+
+class ItemCountView(View):
+    def get(self, request, *args, **kwargs):
+        if request.is_ajax():
+            cart_id = self.request.session.get("cart_id")
+            if cart_id == None:
+                count = 0
+            else:
+                cart = Cart.objects.get(id=cart_id)
+                count = cart.items.count()
+
+            request.session["item_count"] = count
+            return JsonResponse({"count":count})
+        else:
+            raise Http404

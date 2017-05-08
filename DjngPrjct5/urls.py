@@ -21,10 +21,9 @@ from rest_framework import routers
 from posts import views
 from posts.serializers import PostViewSet
 from rest_framework_jwt.views import obtain_jwt_token
-from cart.views import CartView
+from cart.views import CartView, ItemCountView
 from django.conf.urls.static import static
 from django.conf import settings
-
 
 # Creating a Router to direct to api of posts.
 router = routers.DefaultRouter()
@@ -41,6 +40,7 @@ urlpatterns = [
     url(r'^category/', include('Products.urls_category')), # In Product App -> urls_category file will be invoked
     url(r'^reset/', include('password_reset.urls')),
     url(r'^cart/$', CartView.as_view(), name='cart'),
+    url(r'^cart/count/$', ItemCountView.as_view(), name='item_count'),
 
 
     url(r'^api/token/auth/$', obtain_jwt_token), #JWT auth url

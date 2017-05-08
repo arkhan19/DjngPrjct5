@@ -6,3 +6,28 @@
     <script src="{% static 'js/0f41387e41.js' %}"></script>
 {#    <script src="https://use.fontawesome.com/0f41387e41.js"></script>#}
     <script src="{% static 'js/custom.js' %}"></script>
+
+    <script>
+
+        function updateCartItemCount(){
+            var badge = $("#cart-count-badge");
+            $.ajax({
+                type:"GET",
+                url:"{% url 'item_count' %}",
+                success: function(data){
+                    badge.text(data.count);
+
+                },
+                error: function(response, error){
+                    console.log(response.text);
+                    console.log(error);
+
+                }
+            })
+        }
+
+
+        $(document).ready(function(){
+            updateCartItemCount()
+        })
+    </script>

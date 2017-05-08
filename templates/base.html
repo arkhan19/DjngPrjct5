@@ -50,7 +50,7 @@
           <ul class = "nav navbar-nav navbar-right">
               <li>
                   <a href="{% url 'cart' %}">
-                      <span class = 'badge'>0</span>
+                      <span id = "cart-count-badge" class = 'badge'>{{ request.session.cart_item_count }}</span>
                       <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                   </a>
               </li>

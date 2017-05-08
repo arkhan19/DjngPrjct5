@@ -1,7 +1,9 @@
 {%  extends "base.html" %}
 
 {% block content %}
+        <div class="row main-content"></div>
 {% if object.cartitem_set.count < 1 %}
+
 <div class ='col-sm-6 col-sm-offset-3 text-center'>
     <h1> Your Cart is Empty</h1>
     <p>Continue Shopping</p>
@@ -25,7 +27,7 @@
 {# get's the value from the previous hidden input selector which has the item#}
                             var item = $(this).prev("input[type='hidden']").val();
 {# getting the value from the selector #}
-                            var qty = $(this).val()
+                            var qty = $(this).val();
                             var data = {
                                 item : item,
                                 qty : qty
@@ -40,6 +42,7 @@
                                               $("#jquery-message").text("Added " + data.item_Added +
                                                   " Deleted " + data.deleted)
                                               showFlashMessage("Cart Updated")
+                                              updateCartItemCount();
                                               if (data.deleted)
                                               {
 {#                                                  #fades out the tr if deleted#}
@@ -50,6 +53,7 @@
                                                    $('#item-line-total-'+item).text(data.line_total);
                                                    $("#subtotal").text("Total: "+data.sub_total);
                                               }
+
                                     console.log(data)
 
                     },
