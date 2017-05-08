@@ -1,12 +1,17 @@
 {%  extends "base.html" %}
 
 {% block content %}
+{% if object.cartitem_set.count < 1 %}
+<div class ='col-sm-6 col-sm-offset-3 text-center'>
+    <h1> Your Cart is Empty</h1>
+    <p>Continue Shopping</p>
+</div>
 
+
+    {% else %}
 {#{{ object }}#}
 {#{{ object.items.all }}#}
     <table class = 'table'>
-
-
     {% for item in object.cartitem_set.all %}
         <tr id ='item-{{ item.item.id }}'>
             <form action="." method="GET">
@@ -79,7 +84,7 @@
             <td id = 'subtotal' colspan="3" class="text-right">Subtotal: {{ object.subtotal }}</td>
         </tr>
     </table>
-
+{% endif %}
 
 {% endblock %}
 
