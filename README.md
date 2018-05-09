@@ -1,19 +1,6 @@
-# DjngPrjct5
-Django Project 5 
+#DjngPrjct5
+1.
+2.
+3.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-So many lines wasted 
