@@ -30,7 +30,7 @@ router = routers.DefaultRouter()
 
 # Registering the router to view the post's meta data
 router.register(r"Posts", PostViewSet)
-
+# PUULLLL
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
